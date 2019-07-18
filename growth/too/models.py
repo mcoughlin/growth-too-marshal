@@ -14,6 +14,8 @@ from astropy import coordinates
 from astropy import units as u
 from flask_login.mixins import UserMixin
 from flask_sqlalchemy import SQLAlchemy
+from flask_script import Manager
+from flask_migrate import Migrate, MigrateCommand
 import gcn
 import healpy as hp
 from ligo.skymap.bayestar import rasterize
@@ -27,6 +29,9 @@ from sqlalchemy_utils import EmailType, PhoneNumberType
 from .flask import app
 
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+manager = Manager(app)
+manager.add_command('db', MigrateCommand)
 
 
 def get_ztf_quadrants():
@@ -1006,3 +1011,7 @@ class PlanObservability(db.Model):
     airmass = db.deferred(db.Column(
         db.LargeBinary,
         comment='Airmass chart'))
+
+
+if __name__ == '__main__':
+    manager.run()
