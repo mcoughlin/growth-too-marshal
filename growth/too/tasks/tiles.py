@@ -326,23 +326,6 @@ def get_planned_observations(
                     field = fields[0]
                     field_maps[field_id] = field.field_id
 
-                    contour = {
-                        'type': 'Feature',
-                        'geometry': {
-                            'type': 'MultiLineString',
-                            'coordinates': [corners.tolist()]
-                        },
-                        'properties': {
-                            'telescope': telescope,
-                            'field_id': int(field.field_id),
-                            'ra': ra,
-                            'dec': dec,
-                            'depth': dict(zip([], []))
-                        }
-                    }
-                    field.contour = contour
-                    models.db.session.merge(field)
-
         filter_ids = {"g": 1, "r": 2, "i": 3, "z": 4, "J": 5}
         for ii in range(len(coverage_struct["ipix"])):
             data = coverage_struct["data"][ii, :]
